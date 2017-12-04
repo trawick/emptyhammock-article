@@ -2,7 +2,14 @@
 
 ## Overview
 
-At its core, this package provides a multi-purpose `Article` class, a view
+This package implements some of my idiosyncratic ideas for how some classes of
+users can effectively create content for their web site and use a combination of
+Django CMS plugins and other site features to make that content accessible to
+users of their site.  It is not intended to be the only way content would be
+created for a site, and it should not be construed as an appropriate solution
+for a large class of developers and client scenarios.
+
+At its core, the package provides a multi-purpose `Article` class, a view
 for articles, and Django CMS plugins which allow the content editor to
 place particular articles or article teasers on a CMS page.  Additional
 CMS plugins are provided to create article feeds.  As examples, you could
@@ -17,13 +24,6 @@ and they are always limited by time range and number of items.
 
 Articles can be marked invisible either manually or automatically by a
 scheduled task.
-
-This package implements some of my idiosyncratic ideas for how some classes of
-users can effectively create content for their web site and use a combination of
-Django CMS plugins and other site features to make that content accessible to
-users of their site.  It is not intended to be the only way content would be
-created for a site, and it should not be construed as an appropriate solution
-for a large class of developers and client scenarios.
 
 ## Planned development in the near term
 
