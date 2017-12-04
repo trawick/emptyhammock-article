@@ -19,10 +19,11 @@ Articles can be marked invisible either manually or automatically by a
 scheduled task.
 
 This package implements some of my idiosyncratic ideas for how some classes of
-users can effectively create content for a web site and use a combination of
-Django CMS plugins and other features to place articles on particular pages.
-It is not intended to be an appropriate solution for a large class of
-developers and client scenarios.
+users can effectively create content for their web site and use a combination of
+Django CMS plugins and other site features to make that content accessible to
+users of their site.  It is not intended to be the only way content would be
+created for a site, and it should not be construed as an appropriate solution
+for a large class of developers and client scenarios.
 
 ## Planned development in the near term
 
@@ -49,7 +50,6 @@ and other UI aids to prevent frustration.
 ## Support
 
 This package exists to support my own commercial activities.  Just maybe it can
-provide other developers with a helpful hint or even more.  Feel free to open
-Github issues for suggestions or suspected problems, please don't expect me to
-volunteer any time to respond or otherwise address them.  Then if I do, it
-might be a pleasant surprise, and if I don't then you were warned.
+provide other developers with a helpful hint, or even more.  Feel free to open
+Github issues for suggestions or suspected problems, but please don't expect me
+to volunteer any time to respond or otherwise address them directly.
