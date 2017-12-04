@@ -1,0 +1,13 @@
+<p>{{ instance.title }}</p>
+<ul>
+    {% for article in instance.articles %}
+    <li>
+        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+        {% if article.flavor == 'event' %}
+        <br />{{ article.starts_at|default_if_none:'' }}{% endif %}
+        <br />Updated {{ article.modified_at|timesince }} ago
+    </li>
+    {% empty %}
+        <li>{% if instance.override_nothing_found %}{{ instance.override_nothing_found }}{% else %}Nothing found{% endif %}</li>
+    {% endfor %}
+</ul>

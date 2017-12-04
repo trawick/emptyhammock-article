@@ -1,0 +1,20 @@
+{% load article_tags thumbnail %}
+{% if instance.article.visible %}
+    <p>{{ instance.title }}</p>
+    {% if instance.article.byline %}
+        <p>{{ instance.article.byline }}</p>
+    {% endif %}
+    {% if instance.image %}
+        <a href="{{ instance.article.get_absolute_url }}">
+            <img src="{% thumbnail instance.image 400x300 crop %}" alt=""/>
+        </a>
+    {% endif %}
+    {% if instance.override_content %}
+        {{ instance.override_content }}
+    {% elif instance.article.content %}
+        <p>{{ instance.article.content|truncate_content:"100,250" }}</p>
+    {% endif %}
+    <a href="{{ instance.article.get_absolute_url }}">More</a>
+{% else %}
+    <!-- invisible -->
+{% endif %}

@@ -1,0 +1,30 @@
+{% load thumbnail %}<article>{% if article.visible %}
+    <header>
+        <p>{{ article.title }}</p>
+        {% if article.subtitle %}
+            <p>{{ article.subtitle }}</p>
+        {% endif %}
+        {% if article.location %}
+            <p>{{ article.location }}</p>
+        {% endif %}
+        {% if article.starts_at %}
+            <p>{{ article.starts_at}}{% if article.ends_at %} - {{ article.ends_at }}{% endif %}</p>
+        {% endif %}
+        {% if article.byline %}
+            <p>{{ article.byline }}</p>
+        {% endif %}
+    </header>
+    {% if article.article_image %}
+        <p><img src="{% thumbnail article.article_image 800x600 crop %}" alt=""/></p>
+    {% endif %}
+    {% if article.content %}{{ article.content }}{% endif %}
+    {% for link in article.articlerelatedarticle_set.all %}
+        <p><a href="{{ link.other_article.get_absolute_url }}">{{ link.title }}</a></p>
+    {% endfor %}
+    {% for link in article.articlerelatedpage_set.all %}
+        <p><a href="{{ link.page.get_absolute_url }}">{{ link.title }}</a></p>
+    {% endfor %}
+    {% for link in article.articlerelatedurl_set.all %}
+        <p><a href="{{ link.url }}">{{ link.title }}</a></p>
+    {% endfor %}
+{% else %}<!-- invisible -->{% endif %}</article>
