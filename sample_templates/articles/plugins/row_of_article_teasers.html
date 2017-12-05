@@ -1,0 +1,9 @@
+<div class="row">
+    {% for teaser in instance.articleteaserinrow_set.all %}
+        <div class="col-md-{{ instance.columns_per_12_grid }}">
+            <p>{{ teaser.title }}</p>
+            {{ teaser.content }}
+            <a href="{{ teaser.article.get_absolute_url }}">Link</a>
+        </div>
+    {% endfor %}
+</div>

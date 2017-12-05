@@ -1,4 +1,5 @@
 import datetime
+import math
 
 from cms.models import CMSPlugin, Page
 from django.conf import settings
@@ -185,6 +186,36 @@ class ArticlePluginModel(CMSPlugin):
         return str(self.article)
 
 
+class ArticleTeaserData(CMSPlugin):
+    article = models.ForeignKey(Article, null=False, blank=False)
+    override_title = models.CharField(max_length=80, blank=True)
+    override_subtitle = models.CharField(max_length=80, blank=True)
+    override_content = HTMLField(blank=True)
+    override_image = FilerImageField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.article)
+
+    @property
+    def title(self):
+        return self.override_title or self.article.title
+
+    @property
+    def subtitle(self):
+        return self.override_subtitle or self.article.subtitle
+
+    @property
+    def content(self):
+        return self.override_content or self.article.content
+
+    @property
+    def image(self):
+        return self.override_image or self.article.article_image
+
+    class Meta(object):
+        abstract = True
+
+
 class SingleArticleTeaserPluginModel(CMSPlugin):
     ACTION = 'action'
     LINK = 'link'
@@ -215,6 +246,36 @@ class SingleArticleTeaserPluginModel(CMSPlugin):
     @property
     def image(self):
         return self.override_image or self.article.article_image
+
+
+class RowOfArticleTeasersPluginModel(CMSPlugin):
+
+    def copy_relations(self, old_instance):
+        self.articleteaserinrow_set.all().delete()
+        for article in old_instance.articleteaserinrow_set.all():
+            article.pk = None
+            article.row = self
+            article.save()
+
+    def __str__(self):
+        return ','.join([
+            str(article)
+            for article in self.articleteaserinrow_set.all()
+        ])
+
+    @property
+    def columns_per_12_grid(self):
+        count = self.articleteaserinrow_set.count()
+        return math.floor(12 / (count or 12))
+
+
+class ArticleTeaserInRow(ArticleTeaserData):
+    row = models.ForeignKey(RowOfArticleTeasersPluginModel, null=False, blank=False)
+    order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ('order',)
+        unique_together = ('row', 'order')
 
 
 class BaseFeedPluginModel(CMSPlugin):

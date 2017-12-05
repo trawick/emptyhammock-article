@@ -6,7 +6,7 @@ from django import forms
 from .forms import ArticleAdminForm
 from .models import (
     Article, ArticleImage, ArticleRelatedArticle, ArticleRelatedPage,
-    ArticleRelatedURL, ArticleTag
+    ArticleRelatedURL, ArticleTag, ArticleTeaserInRow
 )
 
 
@@ -80,3 +80,8 @@ class ArticleAdmin(admin.ModelAdmin):
 admin.site.register(Article, ArticleAdmin)
 
 admin.site.register(ArticleTag)
+
+
+class ArticleTeaserInRowInlineAdmin(admin.StackedInline):
+    model = ArticleTeaserInRow
+    fk_name = 'row'
