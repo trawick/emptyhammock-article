@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
+from django.utils.functional import lazy
 from django.utils.text import slugify
 from django.utils.timezone import now
 from djangocms_text_ckeditor.fields import HTMLField
@@ -278,7 +279,20 @@ class ArticleTeaserInRow(ArticleTeaserData):
         unique_together = ('row', 'order')
 
 
+def _get_choices(plugin_nickname):
+    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
+    return [
+        (choice['flavor'], choice['description'])
+        for choice in choices
+    ]
+
+
+def get_feed_choices():
+    return _get_choices('ArticleFeed')
+
+
 class BaseFeedPluginModel(CMSPlugin):
+    flavor = models.PositiveSmallIntegerField(blank=False, default=1, choices=lazy(get_feed_choices, list)())
     tags = models.ManyToManyField(ArticleTag, blank=True)
     override_nothing_found = models.CharField(
         'Use this text instead of "Nothing found"', max_length=120, blank=True

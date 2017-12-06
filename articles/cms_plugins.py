@@ -1,8 +1,16 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
+from django.conf import settings
 
 from . import models
 from .admin import ArticleTeaserInRowInlineAdmin
+
+
+def get_template_file(plugin_nickname, flavor):
+    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
+    for choice in choices:
+        if choice['flavor'] == flavor:
+            return choice['template']
 
 
 @plugin_pool.register_plugin
@@ -29,12 +37,16 @@ class RowOfArticleTeasersPlugin(CMSPluginBase):
 @plugin_pool.register_plugin
 class ArticleFeedPlugin(CMSPluginBase):
     model = models.ArticleFeedPluginModel
-    render_template = 'articles/plugins/article_feed.html'
     cache = False
+
+    def get_render_template(self, context, instance, placeholder):
+        return get_template_file('ArticleFeed', instance.flavor)
 
 
 @plugin_pool.register_plugin
 class EventFeedPlugin(CMSPluginBase):
     model = models.EventFeedPluginModel
-    render_template = 'articles/plugins/article_feed.html'
     cache = False
+
+    def get_render_template(self, context, instance, placeholder):
+        return get_template_file('ArticleFeed', instance.flavor)
