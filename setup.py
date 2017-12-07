@@ -26,7 +26,12 @@ setup(
     url='https://github.com/trawick/emptyhammock_article',
     keywords=['django', 'article', 'cms'],
     classifiers=[
+        'Framework :: Django',
+        'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache 2.0 License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.5',
         'Development Status :: 3 - Alpha',
     ],
 )
