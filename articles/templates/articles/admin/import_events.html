@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block content_title %}<h1>{% trans "Import Events" %}</h1>{% endblock %}
+
+{% block content %}
+  <div id="content-main">
+    <form method="post" enctype="multipart/form-data">
+      <div>
+        {% if form.non_field_errors %}
+          <p class="errornote">
+          {% blocktrans count counter=form.non_field_errors|length %}There was an error while importing the CSV:{% plural %}There were some errors while importing the CSV:{% endblocktrans %}
+          </p>
+          {{ form.non_field_errors }}
+        {% endif %}
+        {% csrf_token %}
+        <fieldset class="module align">
+          {% for field in form %}
+            <div class="form-row field-{{ field.name }}{% if field.errors %} error{% endif %}">
+              <div class="field-box field-{{ field.name}}">
+                {{ field.errors }}
+                {% if field.is_checkbox %}
+                    {{ field }}{{ field.label_tag }}
+                {% else %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </fieldset>
+        <div class="submit-row"><input type="submit" class="default" value="Import"></div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

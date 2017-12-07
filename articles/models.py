@@ -31,6 +31,8 @@ class Article(models.Model):
         (PROFILE, 'Profile'),
     )
 
+    MAX_TITLE_LEN = 80
+
     visible = models.BooleanField('Is article visible', default=False)
     flavor = models.CharField(max_length=8, choices=FLAVOR_CHOICES, blank=False)
     location = models.CharField(max_length=100, blank=True)
@@ -40,8 +42,8 @@ class Article(models.Model):
     published_at = models.DateTimeField(null=True, blank=True)
     modified_at = models.DateTimeField(auto_now=True)
     expires_at = models.DateTimeField(null=True, blank=True)
-    title = models.CharField(max_length=80, blank=False)
-    slug = models.SlugField(blank=True, max_length=100, unique=True)
+    title = models.CharField(max_length=MAX_TITLE_LEN, blank=False)
+    slug = models.SlugField(blank=True, max_length=MAX_TITLE_LEN + 10, unique=True)
     subtitle = models.CharField(max_length=80, blank=True)
     byline = models.CharField(max_length=100, blank=True)
     content = HTMLField(blank=True)

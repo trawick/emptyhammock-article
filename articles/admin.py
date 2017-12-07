@@ -1,8 +1,10 @@
 from cms.models import Page
+from django.conf.urls import url
 from django.contrib import admin
 from django.db import models
 from django import forms
 
+from .admin_views import ImportEventsView
 from .forms import ArticleAdminForm
 from .models import (
     Article, ArticleImage, ArticleRelatedArticle, ArticleRelatedPage,
@@ -46,6 +48,7 @@ class ArticleRelatedURLInline(FixCharFieldsMixin, admin.StackedInline):
 
 
 class ArticleAdmin(admin.ModelAdmin):
+    change_list_template = 'articles/admin/article_change_list.html'
     form = ArticleAdminForm
     inlines = (
         ArticleImageInline, ArticleRelatedArticleInline,
@@ -75,6 +78,18 @@ class ArticleAdmin(admin.ModelAdmin):
             )
         })
     )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            url(
+                r'^import_events/$', ImportEventsView.as_view(),
+                name='%s_%s_import_events' % (
+                    self.model._meta.app_label, self.model._meta.model_name
+                )
+            ),
+        ]
+        return my_urls + urls
 
 
 admin.site.register(Article, ArticleAdmin)
