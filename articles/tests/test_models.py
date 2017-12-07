@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from apps.articles.models import Article
+from articles.models import Article
 
 
 class TestArticle(TestCase):
