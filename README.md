@@ -36,6 +36,10 @@ and other UI aids to prevent frustration.
 * Install the latest version from Github by adding something like
   `git+git://github.com/trawick/emptyhammock_article.git@0.0.1` to your
   pip requirements file.  **Please check the current release.**
+* Install dependencies, not currently called out in `setup.py`:
+  * `tablib==0.12.1`, `django-taggit==0.22.1`, `django-cms==3.4.5`,
+    `djangocms-text-ckeditor==3.5.1`, `django-filer==1.3.0` (and
+    their dependencies)
 * Add 'articles' to `INSTALLED_APPS`.
 * Add `url(r'^articles/', include('articles.urls', namespace='articles')),` to
   your base `urls.py`'s `urlpatterns`.
