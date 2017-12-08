@@ -219,6 +219,22 @@ class ArticleTeaserData(CMSPlugin):
         abstract = True
 
 
+def _get_choices(plugin_nickname):
+    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
+    return [
+        (choice['flavor'], choice['description'])
+        for choice in choices
+    ]
+
+
+def get_feed_choices():
+    return _get_choices('ArticleFeed')
+
+
+def get_article_teaser_choices():
+    return _get_choices('SingleArticleTeaser')
+
+
 class SingleArticleTeaserPluginModel(CMSPlugin):
     ACTION = 'action'
     LINK = 'link'
@@ -229,7 +245,9 @@ class SingleArticleTeaserPluginModel(CMSPlugin):
         (SIMPLE, 'Simple')
     )
     article = models.ForeignKey(Article, null=False, blank=False)
-    flavor = models.CharField(max_length=8, choices=FLAVOR_CHOICES, blank=False)
+    flavor = models.PositiveSmallIntegerField(
+        blank=False, default=1, choices=lazy(get_article_teaser_choices, list)()
+    )
     override_title = models.CharField(max_length=80, blank=True)
     override_subtitle = models.CharField(max_length=80, blank=True)
     override_content = HTMLField(blank=True)
@@ -279,18 +297,6 @@ class ArticleTeaserInRow(ArticleTeaserData):
     class Meta(object):
         ordering = ('order',)
         unique_together = ('row', 'order')
-
-
-def _get_choices(plugin_nickname):
-    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
-    return [
-        (choice['flavor'], choice['description'])
-        for choice in choices
-    ]
-
-
-def get_feed_choices():
-    return _get_choices('ArticleFeed')
 
 
 class BaseFeedPluginModel(CMSPlugin):

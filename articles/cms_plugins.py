@@ -26,6 +26,9 @@ class SingleArticleTeaserPlugin(CMSPluginBase):
     render_template = 'articles/plugins/single_article_teaser.html'
     cache = False
 
+    def get_render_template(self, context, instance, placeholder):
+        return get_template_file('SingleArticleTeaser', instance.flavor)
+
 
 @plugin_pool.register_plugin
 class RowOfArticleTeasersPlugin(CMSPluginBase):
