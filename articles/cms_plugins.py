@@ -16,14 +16,15 @@ def get_template_file(plugin_nickname, flavor):
 @plugin_pool.register_plugin
 class ArticlePlugin(CMSPluginBase):
     model = models.ArticlePluginModel
-    render_template = 'articles/plugins/article.html'
     cache = False
+
+    def get_render_template(self, context, instance, placeholder):
+        return get_template_file('Article', instance.flavor)
 
 
 @plugin_pool.register_plugin
 class SingleArticleTeaserPlugin(CMSPluginBase):
     model = models.SingleArticleTeaserPluginModel
-    render_template = 'articles/plugins/single_article_teaser.html'
     cache = False
 
     def get_render_template(self, context, instance, placeholder):

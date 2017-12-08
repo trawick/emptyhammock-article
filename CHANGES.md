@@ -1,5 +1,12 @@
 # Changes and migration requirements
 
+## Version 0.0.7
+
+### Article plugin
+
+You must now declare `ARTICLE_PLUGIN_SETTINGS['Article']` to
+define flavor choices.
+
 ## Version 0.0.6
 
 ### Single Article Teaser plugin

@@ -182,8 +182,31 @@ class ArticleRelatedURL(models.Model):
         verbose_name_plural = 'URLs related to this article'
 
 
+def _get_choices(plugin_nickname):
+    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
+    return [
+        (choice['flavor'], choice['description'])
+        for choice in choices
+    ]
+
+
+def get_article_choices():
+    return _get_choices('Article')
+
+
+def get_feed_choices():
+    return _get_choices('ArticleFeed')
+
+
+def get_article_teaser_choices():
+    return _get_choices('SingleArticleTeaser')
+
+
 class ArticlePluginModel(CMSPlugin):
     article = models.ForeignKey(Article)
+    flavor = models.PositiveSmallIntegerField(
+        blank=False, default=1, choices=lazy(get_article_choices, list)()
+    )
 
     def __str__(self):
         return str(self.article)
@@ -217,22 +240,6 @@ class ArticleTeaserData(CMSPlugin):
 
     class Meta(object):
         abstract = True
-
-
-def _get_choices(plugin_nickname):
-    choices = settings.ARTICLE_PLUGIN_SETTINGS[plugin_nickname]['choices']
-    return [
-        (choice['flavor'], choice['description'])
-        for choice in choices
-    ]
-
-
-def get_feed_choices():
-    return _get_choices('ArticleFeed')
-
-
-def get_article_teaser_choices():
-    return _get_choices('SingleArticleTeaser')
 
 
 class SingleArticleTeaserPluginModel(CMSPlugin):
