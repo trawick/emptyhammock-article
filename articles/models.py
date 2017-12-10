@@ -12,6 +12,7 @@ from django.utils.text import slugify
 from django.utils.timezone import now
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
+import pytz
 from taggit.managers import TaggableManager
 
 
@@ -374,14 +375,20 @@ class EventFeedPluginModel(BaseFeedPluginModel):
 
     @property
     def articles(self):
-        right_now = now()
+        local_tz = pytz.timezone(settings.TIME_ZONE)
+        right_now = now().astimezone(local_tz)
+        # events already started, but no more than 4 hours ago, are eligible
+        # for inclusion
         earlier_today = right_now.replace(hour=max(0, right_now.hour - 4))
-        cutoff = right_now + datetime.timedelta(days=self.max_days_ahead)
+        # max_days_ahead is added to midnight on the current date; anything
+        # that starts by that time is eligible for inclusion
+        today_at_midnight = right_now.replace(hour=23, minute=59, second=0, microsecond=0)
+        cutoff = today_at_midnight + datetime.timedelta(days=self.max_days_ahead)
         qs = Article.objects.filter(
             visible=True,
             flavor=Article.EVENT,
             starts_at__gte=earlier_today,
+            starts_at__lte=cutoff,
         )
-        qs = qs.filter(Q(ends_at__isnull=True) | Q(ends_at__lte=cutoff))
         qs = self.filter_by_tags(qs)
         return qs.order_by('starts_at')[:self.max_articles]
