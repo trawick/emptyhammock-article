@@ -5,7 +5,6 @@ from cms.models import CMSPlugin, Page
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q
 from django.urls import reverse
 from django.utils.functional import lazy
 from django.utils.text import slugify
@@ -23,6 +22,7 @@ class Article(models.Model):
     EVENT = 'event'
     VENUE = 'venue'
     PROFILE = 'profile'
+    ALBUM = 'album'
     FLAVOR_CHOICES = (
         (CONTENT, 'Generic Content'),
         (BLOG, 'Blog article'),
@@ -30,6 +30,7 @@ class Article(models.Model):
         (EVENT, 'Event'),
         (VENUE, 'Venue'),
         (PROFILE, 'Profile'),
+        (ALBUM, 'Album'),
     )
 
     MAX_TITLE_LEN = 80
@@ -48,6 +49,9 @@ class Article(models.Model):
     subtitle = models.CharField(max_length=80, blank=True)
     byline = models.CharField(max_length=100, blank=True)
     content = HTMLField(blank=True)
+    # automated processes can specify a creator key to facilitate filtering of
+    # Articles by those created by that automated process
+    creator_key = models.CharField(max_length=80, blank=True)
 
     tags = TaggableManager()
 
