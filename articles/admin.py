@@ -55,7 +55,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ArticleRelatedPageInline, ArticleRelatedURLInline,
     )
     list_display = ('title', 'flavor', 'starts_at', 'modified_at', 'expires_at', )
-    list_filter = ('visible', 'flavor', )
+    list_filter = ('visible', 'flavor', 'creator_key', )
     readonly_fields = ('created_at', 'published_at', 'modified_at', )
     search_fields = ('title', 'content', 'subtitle', 'location', 'byline', )
     fieldsets = (
