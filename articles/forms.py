@@ -1,6 +1,7 @@
 from datetime import datetime
 import logging
 
+from cms.models import Page
 from dal import autocomplete
 from dateutil.parser import parse
 from django import forms
@@ -114,25 +115,39 @@ class ArticleImportForm(forms.Form):
                     logger.info('Added while importing: %s', article)
 
 
-class ArticlePluginAdminForm(forms.ModelForm):
+class AutocompleteArticleFieldMixin(object):
 
-    article = forms.ModelChoiceField(
-        queryset=Article.objects.filter(visible=True),
-        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
-    )
-
-
-class ArticleTeaserInRowAdminForm(forms.ModelForm):
-
-    article = forms.ModelChoiceField(
-        queryset=Article.objects.filter(visible=True),
-        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
-    )
+    def __init__(self, *args, **kwargs):
+        related_article_field = getattr(self, 'related_article_field', 'article')
+        super().__init__(*args, **kwargs)
+        self.fields[related_article_field] = forms.ModelChoiceField(
+            queryset=Article.objects.filter(visible=True),
+            widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
+        )
 
 
-class SingleArticleTeaserPluginAdminForm(forms.ModelForm):
+class ArticlePluginAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
+    pass
 
-    article = forms.ModelChoiceField(
-        queryset=Article.objects.filter(visible=True),
-        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
+
+class ArticleRelatedArticleAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        self.related_article_field = 'other_article'
+        super().__init__(*args, **kwargs)
+
+
+class ArticleTeaserInRowAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
+    pass
+
+
+class SingleArticleTeaserPluginAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
+    pass
+
+
+class ArticleRelatedPageAdminForm(forms.ModelForm):
+
+    page = forms.ModelChoiceField(
+        queryset=Page.objects.drafts(),
+        widget=autocomplete.ModelSelect2(url='articles:page-autocomplete')
     )

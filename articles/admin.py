@@ -5,7 +5,10 @@ from django.db import models
 from django import forms
 
 from .admin_views import ImportEventsView
-from .forms import ArticleAdminForm, ArticleTeaserInRowAdminForm
+from .forms import (
+    ArticleAdminForm, ArticleRelatedArticleAdminForm,
+    ArticleRelatedPageAdminForm, ArticleTeaserInRowAdminForm
+)
 from .models import (
     Article, ArticleImage, ArticleRelatedArticle, ArticleRelatedPage,
     ArticleRelatedURL, ArticleTag, ArticleTeaserInRow
@@ -28,12 +31,7 @@ class ArticleRelatedArticleInline(FixCharFieldsMixin, admin.StackedInline):
     model = ArticleRelatedArticle
     fk_name = 'article'
     extra = 0
-
-
-class ArticleRelatedPageAdminForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['page'].queryset = Page.objects.drafts()
+    form = ArticleRelatedArticleAdminForm
 
 
 class ArticleRelatedPageInline(FixCharFieldsMixin, admin.StackedInline):

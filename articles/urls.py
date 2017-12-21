@@ -10,5 +10,10 @@ urlpatterns = [
         autocomplete.ArticleAutocomplete.as_view(),
         name='article-autocomplete',
     ),
+    url(
+        r'^page-autocomplete/$',
+        autocomplete.PageAutocomplete.as_view(),
+        name='page-autocomplete',
+    ),
     url(r'^(?P<slug>[^/]+)/$', views.ArticleDetailView.as_view(), name='detail'),
 ]
