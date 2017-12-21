@@ -4,6 +4,7 @@ from django.conf import settings
 
 from . import models
 from .admin import ArticleTeaserInRowInlineAdmin
+from .forms import ArticlePluginAdminForm, SingleArticleTeaserPluginAdminForm
 
 
 def get_template_file(plugin_nickname, flavor):
@@ -17,6 +18,7 @@ def get_template_file(plugin_nickname, flavor):
 class ArticlePlugin(CMSPluginBase):
     model = models.ArticlePluginModel
     cache = False
+    form = ArticlePluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('Article', instance.flavor)
@@ -26,6 +28,7 @@ class ArticlePlugin(CMSPluginBase):
 class SingleArticleTeaserPlugin(CMSPluginBase):
     model = models.SingleArticleTeaserPluginModel
     cache = False
+    form = SingleArticleTeaserPluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('SingleArticleTeaser', instance.flavor)

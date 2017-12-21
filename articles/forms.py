@@ -1,6 +1,7 @@
 from datetime import datetime
 import logging
 
+from dal import autocomplete
 from dateutil.parser import parse
 from django import forms
 from django.conf import settings
@@ -111,3 +112,27 @@ class ArticleImportForm(forms.Form):
                         title=row['URL Description']
                     )
                     logger.info('Added while importing: %s', article)
+
+
+class ArticlePluginAdminForm(forms.ModelForm):
+
+    article = forms.ModelChoiceField(
+        queryset=Article.objects.filter(visible=True),
+        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
+    )
+
+
+class ArticleTeaserInRowAdminForm(forms.ModelForm):
+
+    article = forms.ModelChoiceField(
+        queryset=Article.objects.filter(visible=True),
+        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
+    )
+
+
+class SingleArticleTeaserPluginAdminForm(forms.ModelForm):
+
+    article = forms.ModelChoiceField(
+        queryset=Article.objects.filter(visible=True),
+        widget=autocomplete.ModelSelect2(url='articles:article-autocomplete')
+    )

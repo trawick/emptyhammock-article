@@ -5,6 +5,7 @@ from cms.models import CMSPlugin, Page
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from django.urls import reverse
 from django.utils.functional import lazy
 from django.utils.text import slugify
@@ -100,8 +101,15 @@ class Article(models.Model):
         return reverse('articles:detail', kwargs={'slug': self.slug})
 
     def __str__(self):
+        if self.flavor == self.EVENT:
+            flavor = 'Event at {}'.format(
+                timezone.localtime(self.starts_at).strftime('%b %d %Y, %I:%M %p')
+            )
+        else:
+            flavor = self.flavor
         return '{} ({})'.format(
-            self.title, self.flavor
+            self.title,
+            flavor,
         )
 
     @property

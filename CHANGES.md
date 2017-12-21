@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.0.11
+
+You must now include `django-autocomplete-lite` and its dependencies, in
+support of autocompletion for article plugins.
+
 ## Version 0.0.7
 
 ### Article plugin

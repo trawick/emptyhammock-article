@@ -5,7 +5,7 @@ from django.db import models
 from django import forms
 
 from .admin_views import ImportEventsView
-from .forms import ArticleAdminForm
+from .forms import ArticleAdminForm, ArticleTeaserInRowAdminForm
 from .models import (
     Article, ArticleImage, ArticleRelatedArticle, ArticleRelatedPage,
     ArticleRelatedURL, ArticleTag, ArticleTeaserInRow
@@ -100,3 +100,4 @@ admin.site.register(ArticleTag)
 class ArticleTeaserInRowInlineAdmin(admin.StackedInline):
     model = ArticleTeaserInRow
     fk_name = 'row'
+    form = ArticleTeaserInRowAdminForm
