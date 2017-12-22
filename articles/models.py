@@ -217,9 +217,15 @@ def get_article_teaser_choices():
 
 class ArticlePluginModel(CMSPlugin):
     article = models.ForeignKey(Article)
-    flavor = models.PositiveSmallIntegerField(
-        blank=False, default=1, choices=lazy(get_article_choices, list)()
-    )
+    flavor = models.PositiveSmallIntegerField(blank=False, default=1)
+
+    @staticmethod
+    def get_flavor_choices_fun():
+        return lazy(get_article_choices, list)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._meta.get_field('flavor')._choices = self.get_flavor_choices_fun()()
 
     def __str__(self):
         return str(self.article)
@@ -256,22 +262,20 @@ class ArticleTeaserData(CMSPlugin):
 
 
 class SingleArticleTeaserPluginModel(CMSPlugin):
-    ACTION = 'action'
-    LINK = 'link'
-    SIMPLE = 'simple'
-    FLAVOR_CHOICES = (
-        (ACTION, 'Bold headings and action button'),
-        (LINK, 'Photo and read-more button'),
-        (SIMPLE, 'Simple')
-    )
     article = models.ForeignKey(Article, null=False, blank=False)
-    flavor = models.PositiveSmallIntegerField(
-        blank=False, default=1, choices=lazy(get_article_teaser_choices, list)()
-    )
+    flavor = models.PositiveSmallIntegerField(blank=False, default=1)
     override_title = models.CharField(max_length=80, blank=True)
     override_subtitle = models.CharField(max_length=80, blank=True)
     override_content = HTMLField(blank=True)
     override_image = FilerImageField(null=True, blank=True)
+
+    @staticmethod
+    def get_flavor_choices_fun():
+        return lazy(get_article_teaser_choices, list)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._meta.get_field('flavor')._choices = self.get_flavor_choices_fun()()
 
     def __str__(self):
         return str(self.article)
@@ -320,7 +324,7 @@ class ArticleTeaserInRow(ArticleTeaserData):
 
 
 class BaseFeedPluginModel(CMSPlugin):
-    flavor = models.PositiveSmallIntegerField(blank=False, default=1, choices=lazy(get_feed_choices, list)())
+    flavor = models.PositiveSmallIntegerField(blank=False, default=1)
     tags = models.ManyToManyField(ArticleTag, blank=True)
     override_nothing_found = models.CharField(
         'Use this text instead of "Nothing found"', max_length=120, blank=True
@@ -336,6 +340,14 @@ class BaseFeedPluginModel(CMSPlugin):
         self.tags.clear()
         for tag in old_instance.tags.all():
             self.tags.add(tag)
+
+    @staticmethod
+    def get_flavor_choices_fun():
+        return lazy(get_feed_choices, list)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._meta.get_field('flavor')._choices = self.get_flavor_choices_fun()()
 
     class Meta:
         abstract = True

@@ -126,8 +126,20 @@ class AutocompleteArticleFieldMixin(object):
         )
 
 
-class ArticlePluginAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
-    pass
+class DynamicFlavorChoicesMixin(object):
+
+    def setup_flavor_choices(self):
+        choices = self.Meta.model.get_flavor_choices_fun()()
+        self.fields['flavor'].choices = choices
+        self.fields['flavor'].widget = forms.Select(choices=choices)
+
+
+class ArticlePluginAdminForm(
+        DynamicFlavorChoicesMixin, AutocompleteArticleFieldMixin, forms.ModelForm
+):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setup_flavor_choices()
 
 
 class ArticleRelatedArticleAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
@@ -141,8 +153,12 @@ class ArticleTeaserInRowAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm
     pass
 
 
-class SingleArticleTeaserPluginAdminForm(AutocompleteArticleFieldMixin, forms.ModelForm):
-    pass
+class SingleArticleTeaserPluginAdminForm(
+        DynamicFlavorChoicesMixin, AutocompleteArticleFieldMixin, forms.ModelForm
+):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setup_flavor_choices()
 
 
 class ArticleRelatedPageAdminForm(forms.ModelForm):
@@ -151,3 +167,15 @@ class ArticleRelatedPageAdminForm(forms.ModelForm):
         queryset=Page.objects.drafts(),
         widget=autocomplete.ModelSelect2(url='articles:page-autocomplete')
     )
+
+
+class ArticleFeedPluginAdminForm(DynamicFlavorChoicesMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setup_flavor_choices()
+
+
+class EventFeedPluginAdminForm(DynamicFlavorChoicesMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setup_flavor_choices()

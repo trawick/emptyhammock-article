@@ -4,7 +4,7 @@ from django.conf import settings
 
 from . import models
 from .admin import ArticleTeaserInRowInlineAdmin
-from .forms import ArticlePluginAdminForm, SingleArticleTeaserPluginAdminForm
+from . import forms
 
 
 def get_template_file(plugin_nickname, flavor):
@@ -18,7 +18,7 @@ def get_template_file(plugin_nickname, flavor):
 class ArticlePlugin(CMSPluginBase):
     model = models.ArticlePluginModel
     cache = False
-    form = ArticlePluginAdminForm
+    form = forms.ArticlePluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('Article', instance.flavor)
@@ -28,7 +28,7 @@ class ArticlePlugin(CMSPluginBase):
 class SingleArticleTeaserPlugin(CMSPluginBase):
     model = models.SingleArticleTeaserPluginModel
     cache = False
-    form = SingleArticleTeaserPluginAdminForm
+    form = forms.SingleArticleTeaserPluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('SingleArticleTeaser', instance.flavor)
@@ -45,6 +45,7 @@ class RowOfArticleTeasersPlugin(CMSPluginBase):
 class ArticleFeedPlugin(CMSPluginBase):
     model = models.ArticleFeedPluginModel
     cache = False
+    form = forms.ArticleFeedPluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('ArticleFeed', instance.flavor)
@@ -54,6 +55,7 @@ class ArticleFeedPlugin(CMSPluginBase):
 class EventFeedPlugin(CMSPluginBase):
     model = models.EventFeedPluginModel
     cache = False
+    form = forms.EventFeedPluginAdminForm
 
     def get_render_template(self, context, instance, placeholder):
         return get_template_file('ArticleFeed', instance.flavor)
