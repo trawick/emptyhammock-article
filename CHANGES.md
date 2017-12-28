@@ -4,6 +4,8 @@
 
 Article search is now implemented.  The search view is referred to as
 `articles:search`; the template is `articles/article_search_results.html`.
+It only works with Postgres, and `django.contrib.postgres` must be added
+to `INSTALLED_APPS`.
 
 ## Version 0.0.11
 
