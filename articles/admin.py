@@ -1,4 +1,3 @@
-from cms.models import Page
 from django.conf.urls import url
 from django.contrib import admin
 from django.db import models
