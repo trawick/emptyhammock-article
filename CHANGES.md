@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.0.14
+
+Article search is now implemented.  The search view is referred to as
+`articles:search`; the template is `articles/article_search_results.html`.
+
 ## Version 0.0.11
 
 You must now include `django-autocomplete-lite` and its dependencies, in
