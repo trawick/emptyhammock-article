@@ -20,5 +20,9 @@ urlpatterns = [
         views.ArticleSearchResultView.as_view(),
         name='search',
     ),
-    url(r'^(?P<slug>[^/]+)/$', views.ArticleDetailView.as_view(), name='detail'),
+    url(
+        r'^view/(?P<slug>[^/]+)/$',
+        views.ArticleDetailView.as_view(),
+        name='detail'
+    ),
 ]

@@ -1,5 +1,17 @@
 # Changes and migration requirements
 
+## Version 0.0.15
+
+### Detail view URL
+
+This is now `<prefix>/view/<slug/` instead of simply `<prefix>/<slug>/`.
+No redirects are provided.
+
+### Article search configuration
+
+A Postgres search configuration can be specified.  This is covered in the
+README.
+
 ## Version 0.0.14
 
 Article search is now implemented.  The search view is referred to as

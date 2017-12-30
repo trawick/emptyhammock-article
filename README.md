@@ -51,6 +51,38 @@ and other UI aids to prevent frustration.
 * Optional: Call `articles.utils.expire_articles()` from a scheduled task in
   order to mark expired articles as invisible.
 
+## Specifying an Article search configuration
+
+### Example Postgres setup
+
+The following commands create a full text search configuration that ignores
+accents:
+
+```
+$ sudo -u postgres psql my_project_db
+psql (9.5.10, server 9.4.8)
+Type "help" for help.
+
+my_project_db=# create extension if not exists unaccent;
+CREATE EXTENSION
+my_project_db=# create text search configuration english_unaccent(copy=english);
+CREATE TEXT SEARCH CONFIGURATION
+my_project_db=# alter text search configuration english_unaccent alter mapping for hword, hword_part, word with unaccent, english_stem;
+ALTER TEXT SEARCH CONFIGURATION
+my_project_db=#
+```
+
+### Django settings
+
+This configures Article search to use the configuration created in the example
+above:
+
+```
+ARTICLE_SEARCH_SETTINGS = {
+    'config': 'english_unaccent',
+}
+```
+
 ## Support
 
 This package exists to support my own commercial activities.  Just maybe it can
