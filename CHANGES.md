@@ -4,7 +4,15 @@
 
 ### Repository name
 
-This was changed from `emptyhammock_article` to `emptyhammock-article`.
+The repository name was changed from `emptyhammock_article` to
+`emptyhammock-article`.
+
+### `new_event` management command
+
+This brings two new dependencies:
+
+* `django-click` (and its dependencies)
+* `emptyhammock-time` (`git+git://github.com/trawick/emptyhammock-time.git@0.0.2`)
 
 ## Version 0.0.15
 
