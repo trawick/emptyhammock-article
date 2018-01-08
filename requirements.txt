@@ -1,0 +1,8 @@
+Django==1.11.9
+  pytz==2017.3
+django-cms==3.4.5
+  django-classy-tags==0.8.0
+  django-formtools==2.1
+  django-sekizai==0.10.0
+  django-treebeard==4.2.0
+  djangocms-admin-style==1.2.7
