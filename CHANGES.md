@@ -1,5 +1,11 @@
 # Changes and migration requirements
 
+## Version 0.0.16
+
+### Repository name
+
+This was changed from `emptyhammock_article` to `emptyhammock-article`.
+
 ## Version 0.0.15
 
 ### Detail view URL

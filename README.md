@@ -1,4 +1,4 @@
-# emptyhammock_article
+# emptyhammock-article
 
 ## Overview
 
@@ -34,7 +34,7 @@ and other UI aids to prevent frustration.
 ## Integrating this in your Django/Django CMS project
 
 * Install the latest version from Github by adding something like
-  `git+git://github.com/trawick/emptyhammock_article.git@0.0.1` to your
+  `git+git://github.com/trawick/emptyhammock-article.git@0.0.1` to your
   pip requirements file.  **Please check the current release.**
 * Install dependencies, not currently called out in `setup.py`:
   * `tablib==0.12.1`, `django-taggit==0.22.1`, `django-cms==3.4.5`,

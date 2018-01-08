@@ -23,7 +23,7 @@ setup(
     description='A Django app providing an Article model and utilities, with Django CMS integration',
     author='Emptyhammock Software and Services LLC',
     author_email='info@emptyhammock.com',
-    url='https://github.com/trawick/emptyhammock_article',
+    url='https://github.com/trawick/emptyhammock-article',
     keywords=['django', 'article', 'cms'],
     classifiers=[
         'Framework :: Django',
