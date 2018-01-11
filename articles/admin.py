@@ -70,8 +70,8 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Other fields', {
             'classes': ('collapse', ),
             'fields': (
-                'expires_at',
-                'slug', 'created_at', 'modified_at', 'published_at',
+                'expires_at', 'slug', 'creator_key',
+                'created_at', 'modified_at', 'published_at',
             )
         })
     )

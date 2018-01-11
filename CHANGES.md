@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.17
+
+* `Article.creator_key` is now viewable and editable in admin.
+
 ## Version 0.0.16
 
 ### Repository name
