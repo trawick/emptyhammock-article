@@ -2,28 +2,29 @@
 
 ## Overview
 
-This package implements some of my idiosyncratic ideas for how some classes of
+This package implements an idea for how some classes of
 users can effectively create content for their web site and use a combination of
 Django CMS plugins and other site features to make that content accessible to
 users of their site.  It is not intended to be the only way content would be
 created for a site, and it should not be construed as an appropriate solution
-for a large class of developers and client scenarios.
+for everyone.
 
 At its core, the package provides a multi-purpose `Article` class, a view
 for articles, and Django CMS plugins which allow the content editor to
 place particular articles or article teasers on a CMS page.  Additional
-CMS plugins are provided to create article feeds.  As examples, you could
+CMS plugins are provided to create article feeds.  For example, you could
 place an article feed on a CMS page that displays links to sets of articles
 like the following:
 
 * recently updated articles
 * upcoming (future) events
 
-The article feeds can optionally be limited by particular article tags,
-and they are always limited by time range and number of items.
+The article feeds can optionally be limited by particular article tags
+and they are always limited by maximum number of items and maximum event
+start time.
 
 Articles can be marked invisible either manually or automatically by a
-scheduled task.
+scheduled task.  Support is provided for marking past events as invisible.
 
 ## Planned development in the near term
 
@@ -53,10 +54,13 @@ and other UI aids to prevent frustration.
 
 ## Specifying an Article search configuration
 
+Full-text search can be enabled for the `Article` model, as described in this section.
+
 ### Example Postgres setup
 
-The following commands create a full text search configuration that ignores
-accents:
+A Postgres search configuration will be useful in some circumstances, such as when
+searching should ignore accents.  The following commands create a full text search
+configuration that ignores accents:
 
 ```
 $ sudo -u postgres psql my_project_db
@@ -74,7 +78,7 @@ my_project_db=#
 
 ### Django settings
 
-This configures Article search to use the configuration created in the example
+This configures Article search to use the search configuration created in the example
 above:
 
 ```
