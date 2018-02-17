@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.db import models
 from django import forms
+from taggit.models import TaggedItem
 
 from .admin_views import ImportEventsView
 from .forms import (
@@ -44,14 +45,69 @@ class ArticleRelatedURLInline(FixCharFieldsMixin, admin.StackedInline):
     extra = 0
 
 
+def duplicate_articles(modeladmin, request, queryset):
+    # The duplicate copy will be like the original, even with associated
+    # data duplicated, except that:
+    # - The title will have " (copy)" appended
+    # - The duplicate won't be visible on the site
+    # - The duplicate will have creator_key cleared (e.g., so the duplicate
+    #   wouldn't be wiped out by some workflows that use that field, thinking
+    #   that the duplicate was created by that workflow).
+    # - The slug will be unique.
+    for obj in queryset:
+        orig_pk = obj.pk
+        new_article = obj
+        new_article.pk = None
+        new_article.title = '{} (copy)'.format(new_article.title)
+        new_article.creator_key = ''
+        new_article.visible = False
+        # The slug is taken care of in .save()
+        new_article.save()
+
+        orig_article = Article.objects.get(pk=orig_pk)
+        # Copy tags
+        for tag in orig_article.tags.all():
+            TaggedItem.objects.create(content_object=new_article, tag=tag)
+
+        # Copy images, related articles, related pages, related URLs
+        for set_to_copy in (
+            orig_article.articleimage_set,
+            orig_article.articlerelatedarticle_set,
+            orig_article.articlerelatedarticle_set,
+            orig_article.articlerelatedurl_set
+        ):
+            for related in set_to_copy.all():
+                related.pk = None
+                related.article = new_article
+                related.save()
+
+
+duplicate_articles.short_description = 'Duplicate selected articles'
+
+
+def hide_articles(modeladmin, request, queryset):
+    queryset.update(visible=False)
+
+
+hide_articles.short_description = 'Hide selected articles'
+
+
+def show_articles(modeladmin, request, queryset):
+    queryset.update(visible=True)
+
+
+show_articles.short_description = 'Show selected articles'
+
+
 class ArticleAdmin(admin.ModelAdmin):
+    actions = [duplicate_articles, hide_articles, show_articles]
     change_list_template = 'articles/admin/article_change_list.html'
     form = ArticleAdminForm
     inlines = (
         ArticleImageInline, ArticleRelatedArticleInline,
         ArticleRelatedPageInline, ArticleRelatedURLInline,
     )
-    list_display = ('title', 'flavor', 'starts_at', 'modified_at', 'expires_at', )
+    list_display = ('title', 'visible', 'flavor', 'starts_at', 'modified_at', )
     list_filter = ('visible', 'flavor', 'creator_key', )
     readonly_fields = ('created_at', 'published_at', 'modified_at', )
     search_fields = ('title', 'content', 'subtitle', 'location', 'byline', )

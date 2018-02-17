@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.0.18
+
+* `Article` admin now provides duplicate, hide, and show actions.
+* Site visibility is displayed in the admin list view.
+
 ## Version 0.0.17
 
 * `Article.creator_key` is now viewable and editable in admin.
