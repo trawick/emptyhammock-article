@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.19
+
+* `Article` search now searches the `subtitle` field too.
+
 ## Version 0.0.18
 
 * `Article` admin now provides duplicate, hide, and show actions.

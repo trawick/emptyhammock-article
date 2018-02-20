@@ -30,6 +30,7 @@ class ArticleSearchResultView(ListView):
             qs = qs.annotate(
                 search=(
                     SearchVector('title', **self.config_kwargs) +
+                    SearchVector('subtitle', **self.config_kwargs) +
                     SearchVector('content', **self.config_kwargs) +
                     SearchVector('location', **self.config_kwargs) +
                     SearchVector('byline', **self.config_kwargs)
