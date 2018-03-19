@@ -85,8 +85,11 @@ class Article(models.Model):
         else:
             self.published_at = None
 
-        if not self.expires_at:
-            if self.flavor == self.EVENT and self.starts_at:
+        if self.flavor == self.EVENT and self.starts_at:
+            # expires_at might be less than starts_at if the article was
+            # created in admin as a copy of another event but then had its
+            # start time changed.
+            if not self.expires_at or (self.expires_at < self.starts_at):
                 delta = getattr(
                     settings,
                     'ARTICLE_EVENT_EXPIRES_DELTA',

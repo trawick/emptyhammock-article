@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.0.20
+
+* Reset the expiration time for an event `Article` if it is currently less
+  than the start time.
+
 ## Version 0.0.19
 
 * `Article` search now searches the `subtitle` field too.
