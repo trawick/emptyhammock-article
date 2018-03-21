@@ -32,6 +32,7 @@ class Article(models.Model):
         (VENUE, 'Venue'),
         (PROFILE, 'Profile'),
         (ALBUM, 'Album'),
+        # Update ArticleFeedPluginModel when adding a flavor!
     )
 
     MAX_TITLE_LEN = 80
@@ -365,6 +366,7 @@ class ArticleFeedPluginModel(BaseFeedPluginModel):
     include_event = models.BooleanField(default=False)
     include_venue = models.BooleanField(default=False)
     include_profile = models.BooleanField(default=False)
+    include_album = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -384,6 +386,8 @@ class ArticleFeedPluginModel(BaseFeedPluginModel):
             flavors.append(Article.VENUE)
         if self.include_profile:
             flavors.append(Article.PROFILE)
+        if self.include_album:
+            flavors.append(Article.ALBUM)
         qs = Article.objects.filter(
             visible=True,
             flavor__in=flavors

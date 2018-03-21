@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.21
+
+* The article feed CMS plugin now supports inclusion of "Album" articles.
+
 ## Version 0.0.20
 
 * Reset the expiration time for an event `Article` if it is currently less
