@@ -1,5 +1,11 @@
 # Changes and migration requirements
 
+## Version 0.0.22
+
+* The search view now orders even empty querysets in order to avoid
+  `UnorderedObjectListWarning` in that case (e.g., loading the search page
+  with no prior search).
+
 ## Version 0.0.21
 
 * The article feed CMS plugin now supports inclusion of "Album" articles.

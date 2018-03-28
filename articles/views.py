@@ -37,6 +37,6 @@ class ArticleSearchResultView(ListView):
                 ),
             ).filter(search=SearchQuery(search_string, **self.config_kwargs))
         except KeyError:
-            return Article.objects.none()
+            qs = Article.objects.none()
 
         return qs.order_by('starts_at')
