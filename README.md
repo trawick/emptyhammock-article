@@ -87,6 +87,22 @@ ARTICLE_SEARCH_SETTINGS = {
 }
 ```
 
+## Importing event articles from a spreadsheet
+
+Events can be imported from a CSV file or an Excel workbook.  Here are the names of the required columns:
+
+* `Location`
+* `Title`
+* `Start Date` (e.g., "1/31/2018")
+* `Start Time` (e.g., "9:30 PM")
+* `Tags` (comma-separated, like "Durham" or "Durham,Raleigh,Chapel Hill")
+* `URL`
+* `URL Description`
+
+Rows must have a value for each column.  Event articles can only be added; attributes cannot be updated by
+re-importing an updated spreadsheet.  If an event article in the spreadsheet already exists with the
+same title text, location text, and start time, it will be ignored.
+
 ## Support
 
 Please open Github issues for suggestions or suspected problems.  Even if I am
