@@ -1,4 +1,4 @@
-Django==1.11.9
+Django==1.11.15
   pytz==2017.3
 django-cms==3.4.5
   django-classy-tags==0.8.0
