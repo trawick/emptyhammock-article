@@ -13,12 +13,13 @@ from articles.models import Article
 @click.argument('tags')
 @click.argument('url')
 @click.argument('url_title')
-def command(title, when, location, tags, url, url_title):
+@click.option('--subtitle')
+def command(title, when, location, tags, url, url_title, subtitle):
     local_tz = pytz.timezone(settings.TIME_ZONE)
     tags = [tag.strip() for tag in tags.split(',')]
 
     starts_at, ends_at = parse_single_event(when, local_tz=local_tz)
-    article = Article(
+    article_args = dict(
         flavor=Article.EVENT,
         visible=True,
         title=title,
@@ -26,6 +27,11 @@ def command(title, when, location, tags, url, url_title):
         ends_at=ends_at,
         location=location,
     )
+
+    if subtitle:
+        article_args['subtitle'] = subtitle
+
+    article = Article(**article_args)
     article.full_clean()
     article.save()
 

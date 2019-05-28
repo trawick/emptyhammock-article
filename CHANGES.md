@@ -1,5 +1,10 @@
 # Changes and migration requirements
 
+## Version 0.0.23
+
+* The `new_event` management command now accepts a subtitle via the
+  `--subtitle` command-line option.
+
 ## Version 0.0.22
 
 * The search view now orders even empty querysets in order to avoid
