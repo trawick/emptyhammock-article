@@ -1,6 +1,9 @@
 import logging
 
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ModuleNotFoundError:
+    from django.urls import reverse
 from django.views.generic.edit import FormView
 
 from .forms import ArticleImportForm

@@ -142,18 +142,23 @@ class ArticleTag(models.Model):
 
 
 class ArticleImage(models.Model):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     visible = models.BooleanField('Is image visible', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     primary = models.BooleanField(default=False)
-    image = FilerImageField(null=False, blank=False)
+    image = FilerImageField(null=False, blank=False, on_delete=models.CASCADE)
 
 
 class ArticleRelatedArticle(models.Model):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     other_article = models.ForeignKey(
-        Article, null=False, blank=False, related_name='related_article'
+        Article, null=False, blank=False, related_name='related_article',
+        on_delete=models.CASCADE
     )
     override_title = models.CharField(max_length=80, blank=True)
 
@@ -170,7 +175,9 @@ class ArticleRelatedArticle(models.Model):
 
 
 class ArticleRelatedPage(models.Model):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     page = models.ForeignKey(Page, null=True, blank=False, on_delete=models.SET_NULL)
     override_title = models.CharField(max_length=80, blank=True)
 
@@ -187,7 +194,9 @@ class ArticleRelatedPage(models.Model):
 
 
 class ArticleRelatedURL(models.Model):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     url = models.URLField(blank=False)
     title = models.CharField(max_length=80, blank=True)
 
@@ -220,7 +229,7 @@ def get_article_teaser_choices():
 
 
 class ArticlePluginModel(CMSPlugin):
-    article = models.ForeignKey(Article)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     flavor = models.PositiveSmallIntegerField(blank=False, default=1)
 
     @staticmethod
@@ -236,11 +245,15 @@ class ArticlePluginModel(CMSPlugin):
 
 
 class ArticleTeaserData(CMSPlugin):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     override_title = models.CharField(max_length=80, blank=True)
     override_subtitle = models.CharField(max_length=80, blank=True)
     override_content = HTMLField(blank=True)
-    override_image = FilerImageField(null=True, blank=True)
+    override_image = FilerImageField(
+        null=True, blank=True, on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return str(self.article)
@@ -266,12 +279,16 @@ class ArticleTeaserData(CMSPlugin):
 
 
 class SingleArticleTeaserPluginModel(CMSPlugin):
-    article = models.ForeignKey(Article, null=False, blank=False)
+    article = models.ForeignKey(
+        Article, null=False, blank=False, on_delete=models.CASCADE
+    )
     flavor = models.PositiveSmallIntegerField(blank=False, default=1)
     override_title = models.CharField(max_length=80, blank=True)
     override_subtitle = models.CharField(max_length=80, blank=True)
     override_content = HTMLField(blank=True)
-    override_image = FilerImageField(null=True, blank=True)
+    override_image = FilerImageField(
+        null=True, blank=True, on_delete=models.CASCADE
+    )
 
     @staticmethod
     def get_flavor_choices_fun():
@@ -319,7 +336,10 @@ class RowOfArticleTeasersPluginModel(CMSPlugin):
 
 
 class ArticleTeaserInRow(ArticleTeaserData):
-    row = models.ForeignKey(RowOfArticleTeasersPluginModel, null=False, blank=False)
+    row = models.ForeignKey(
+        RowOfArticleTeasersPluginModel, null=False, blank=False,
+        on_delete=models.CASCADE
+    )
     order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
     class Meta(object):

@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## unreleased
+
+* Support Django 2.2.
+
 ## Version 0.0.23
 
 * The `new_event` management command now accepts a subtitle via the

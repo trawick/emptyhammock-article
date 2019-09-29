@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 from . import autocomplete_views as autocomplete
 
+app_name = 'articles'
 
 urlpatterns = [
     url(
