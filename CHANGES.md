@@ -1,6 +1,6 @@
 # Changes and migration requirements
 
-## unreleased
+## Version 0.0.24
 
 * Support Django 2.2.
 
