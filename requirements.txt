@@ -1,5 +1,5 @@
-Django==1.11.21
-  pytz==2019.1
+Django==1.11.25
+  pytz==2019.2
 django-cms==3.4.5
   django-classy-tags==0.8.0
   django-formtools==2.1
