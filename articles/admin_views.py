@@ -2,7 +2,7 @@ import logging
 
 try:
     from django.core.urlresolvers import reverse
-except ModuleNotFoundError:
+except ImportError:
     from django.urls import reverse
 from django.views.generic.edit import FormView
 

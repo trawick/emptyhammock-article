@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.25
+
+* Fix an incompatibility with Python 3.5 which was added in 0.0.24.
+
 ## Version 0.0.24
 
 * Support Django 2.2.
