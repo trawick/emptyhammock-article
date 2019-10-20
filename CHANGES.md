@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.27
+
+* Fix bug in past event feeds.
+
 ## Version 0.0.26
 
 * Allow an event feed to display past events instead of future events.
