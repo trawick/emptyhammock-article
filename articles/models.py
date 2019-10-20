@@ -444,7 +444,8 @@ class EventFeedPluginModel(BaseFeedPluginModel):
         # max_days_ahead is added to midnight on the current date; anything
         # that starts by that time is eligible for inclusion
         today_at_midnight = right_now.replace(hour=23, minute=59, second=0, microsecond=0)
-        cutoff_delta = datetime.timedelta(days=self.max_days_ahead)
+        # one of max_days_ahead/behind is 0!
+        cutoff_delta = datetime.timedelta(days=self.max_days_ahead + self.max_days_behind)
         qs = Article.objects.filter(
             visible=True,
             flavor=Article.EVENT,
