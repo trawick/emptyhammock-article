@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.26 (not released)
+
+* Allow an event feed to display past events instead of future events.
+
 ## Version 0.0.25
 
 * Fix an incompatibility with Python 3.5 which was added in 0.0.24.

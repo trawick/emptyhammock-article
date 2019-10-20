@@ -420,9 +420,19 @@ class EventFeedPluginModel(BaseFeedPluginModel):
     title = models.CharField(max_length=40, blank=False)
     max_articles = models.SmallIntegerField(default=6)
     max_days_ahead = models.SmallIntegerField(default=30)
+    max_days_behind = models.SmallIntegerField(default=0)
+    is_future = models.BooleanField(default=True, editable=False)
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if (self.max_days_ahead > 0) == (self.max_days_behind > 0):
+            raise ValidationError("Either days-ahead or days-behind must be > 0")
+
+    def save(self, *args, **kwargs):
+        self.is_future = self.max_days_ahead > 0
+        super().save(*args, **kwargs)
 
     @property
     def articles(self):
@@ -434,12 +444,20 @@ class EventFeedPluginModel(BaseFeedPluginModel):
         # max_days_ahead is added to midnight on the current date; anything
         # that starts by that time is eligible for inclusion
         today_at_midnight = right_now.replace(hour=23, minute=59, second=0, microsecond=0)
-        cutoff = today_at_midnight + datetime.timedelta(days=self.max_days_ahead)
+        cutoff_delta = datetime.timedelta(days=self.max_days_ahead)
         qs = Article.objects.filter(
             visible=True,
             flavor=Article.EVENT,
+        )
+        qs = qs.filter(
             starts_at__gte=earlier_today,
-            starts_at__lte=cutoff,
+            starts_at__lte=today_at_midnight + cutoff_delta,
+        ) if self.max_days_ahead > 0 else qs.filter(
+            starts_at__lte=earlier_today,
+            starts_at__gte=today_at_midnight - cutoff_delta,
         )
         qs = self.filter_by_tags(qs)
-        return qs.order_by('starts_at')[:self.max_articles]
+        qs = qs.order_by(
+            'starts_at' if self.max_days_ahead > 0 else '-starts_at'
+        )
+        return qs[:self.max_articles]
