@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 from . import autocomplete_views as autocomplete
@@ -6,23 +6,23 @@ from . import autocomplete_views as autocomplete
 app_name = 'articles'
 
 urlpatterns = [
-    url(
-        r'^article-autocomplete/$',
+    path(
+        'article-autocomplete/',
         autocomplete.ArticleAutocomplete.as_view(),
         name='article-autocomplete',
     ),
-    url(
-        r'^page-autocomplete/$',
+    path(
+        'page-autocomplete/',
         autocomplete.PageAutocomplete.as_view(),
         name='page-autocomplete',
     ),
-    url(
-        r'^search/$',
+    path(
+        'search/',
         views.ArticleSearchResultView.as_view(),
         name='search',
     ),
-    url(
-        r'^view/(?P<slug>[^/]+)/$',
+    path(
+        'view/<str:slug>/',
         views.ArticleDetailView.as_view(),
         name='detail'
     ),

@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib import admin
 from django.db import models
 from django import forms
@@ -45,6 +45,9 @@ class ArticleRelatedURLInline(FixCharFieldsMixin, admin.StackedInline):
     extra = 0
 
 
+@admin.action(
+    description='Duplicate selected articles'
+)
 def duplicate_articles(modeladmin, request, queryset):
     # The duplicate copy will be like the original, even with associated
     # data duplicated, except that:
@@ -82,23 +85,21 @@ def duplicate_articles(modeladmin, request, queryset):
                 related.save()
 
 
-duplicate_articles.short_description = 'Duplicate selected articles'
-
-
+@admin.action(
+    description='Hide selected articles'
+)
 def hide_articles(modeladmin, request, queryset):
     queryset.update(visible=False)
 
 
-hide_articles.short_description = 'Hide selected articles'
-
-
+@admin.action(
+    description='Show selected articles'
+)
 def show_articles(modeladmin, request, queryset):
     queryset.update(visible=True)
 
 
-show_articles.short_description = 'Show selected articles'
-
-
+@admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     actions = [duplicate_articles, hide_articles, show_articles]
     change_list_template = 'articles/admin/article_change_list.html'
@@ -135,8 +136,8 @@ class ArticleAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            url(
-                r'^import_events/$', ImportEventsView.as_view(),
+            path(
+                'import_events/', ImportEventsView.as_view(),
                 name='%s_%s_import_events' % (
                     self.model._meta.app_label, self.model._meta.model_name
                 )
@@ -144,8 +145,6 @@ class ArticleAdmin(admin.ModelAdmin):
         ]
         return my_urls + urls
 
-
-admin.site.register(Article, ArticleAdmin)
 
 admin.site.register(ArticleTag)
 

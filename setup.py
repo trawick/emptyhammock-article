@@ -20,7 +20,9 @@ setup(
     include_package_data=True,
     license='Apache 2.0 License',
     version=VERSION,
-    description='A Django app providing an Article model and utilities, with Django CMS integration',
+    description=(
+        'A Django app providing an Article model and utilities, with Django CMS integration'
+    ),
     author='Emptyhammock Software and Services LLC',
     author_email='info@emptyhammock.com',
     url='https://github.com/trawick/emptyhammock-article',

@@ -1,9 +1,6 @@
 import logging
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 from django.views.generic.edit import FormView
 
 from .forms import ArticleImportForm

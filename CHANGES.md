@@ -1,5 +1,9 @@
 # Changes and migration requirements
 
+## Version 0.0.28
+
+* Support/require Django 4.2.
+
 ## Version 0.0.27
 
 * Fix bug in past event feeds.

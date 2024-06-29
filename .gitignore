@@ -1,6 +1,7 @@
 __pycache__
 .idea
 env
+venv/
 build/
 dist/
 emptyhammock_article.egg-info
